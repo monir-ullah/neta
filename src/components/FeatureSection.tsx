@@ -1,12 +1,5 @@
 import React from "react";
-import UserLocation from "./UserLocation";
-import { User } from "lucide-react";
-import UserLocation2 from "./AccurateLocationLogger";
-import AccurateLocationLogger from "./AccurateLocationLogger";
 import CameraComponent from "./CameraComponent";
-import PythonWebcam from "./PythonWebcam";
-import PythonWebcam2 from "./PythonWebCam2";
-import LocationPlusCamera from "./LocationPlusCamera";
 
 const features = [
   {
@@ -60,16 +53,8 @@ const FeatureSection: React.FC = () => {
         ))}
       </div>
 
-       <UserLocation />
-      <AccurateLocationLogger /> 
+       
       <CameraComponent />
-      {/* <PythonWebcam /> */}
-      
-
-      {/* <PythonWebcam2 /> */}
-
-      {/* <LocationPlusCamera /> */}
-      {/* <button className="cta">Get started — it's free</button> */}
 
       {/* CSS inside same file */}
       <style>{`

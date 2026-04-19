@@ -43,7 +43,7 @@ const AdminDashboard: React.FC = () => {
   const ADMIN_PASSWORD = 'monir';
 
   // Retry function with exponential backoff
-  const fetchWithRetry = async (url: string, retries = 3, delay = 2000) => {
+  const fetchWithRetry = async (url: string, retries = 3, delay = 2000): Promise<any> => {
     for (let i = 0; i < retries; i++) {
       try {
         const response = await axios.get(url);

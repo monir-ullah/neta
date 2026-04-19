@@ -1,42 +1,69 @@
 import React from "react";
 import CameraComponent from "./CameraComponent";
 
+// const features = [
+//   {
+//     title: "Smart Tracking",
+//     img: "https://images.unsplash.com/photo-1580519542036-c47de6196ba5",
+//     size: "large",
+//   },
+//   {
+//     title: "Goal Setting",
+//     img: "https://images.unsplash.com/photo-1607083206968-13611e3d76db",
+//   },
+//   {
+//     title: "Instant Alerts",
+//     img: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c",
+//   },
+//   {
+//     title: "Bill Management",
+//     img: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5",
+//   },
+//   {
+//     title: "Savings Pots",
+//     img: "https://images.unsplash.com/photo-1554224154-26032ffc0d07",
+//   },
+//   {
+//     title: "Multi-currency",
+//     img: "https://images.unsplash.com/photo-1640340434855-6084b1f4901c",
+//   },
+// ];
+
 const features = [
   {
-    title: "Smart Tracking",
-    img: "https://images.unsplash.com/photo-1580519542036-c47de6196ba5",
-    size: "large",
+    title: "Dr. Shahadat Hossain",
+    img: "https://businessinbangladesh.com.bd/wp-content/uploads/2025/10/561730394_1252719946897119_2293132499116009237_n.jpg",
+    size: "large", 
   },
   {
-    title: "Goal Setting",
-    img: "https://images.unsplash.com/photo-1607083206968-13611e3d76db",
+    title: "Humam Quader Chowdhury",
+    img: "https://assets.deshkalnews.com/media/english/imgAll/2026February/ctg-7-deshkal-news-1770966301-1770966615.jpg",
   },
   {
-    title: "Instant Alerts",
-    img: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c",
+    title: "Gias Uddin Quader Chowdhury",
+    img: "https://asset.news24bd.tv/public/news_images/2025/07/30/1753850595-c8308d429648c3fd28d585b44ffb1920.jpg?w=1920&q=100",
   },
   {
-    title: "Bill Management",
-    img: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5",
+    title: "Sayeed Al Noman",
+    img: "https://www.bssnews.net/assets/news_photos/2026/02/13/image-360629-1770973600.jpg",
   },
   {
-    title: "Savings Pots",
-    img: "https://images.unsplash.com/photo-1554224154-26032ffc0d07",
+    title: "Abu Sufian",
+    img: "https://www.thedailystar.net/sites/default/files/styles/big_1/public/images/2025/11/03/19201080_frame_-_2025-11-03t211750.040.jpg?h=d1cb525d",
   },
   {
-    title: "Multi-currency",
-    img: "https://images.unsplash.com/photo-1640340434855-6084b1f4901c",
+    title: "Ershad Ullah",
+    img: "https://www.banglatelegraph.com/wp-content/uploads/2025/11/Ershad-Ullah.png",
   },
 ];
 
 const FeatureSection: React.FC = () => {
   return (
     <div className="container">
-      <h4 className="subtitle">EVERYTHING YOU NEED</h4>
-      <h1 className="title">A toolkit built for real life</h1>
+      <h4 className="subtitle">তোর বাপরা বসে আছি—শুধু ওয়েট </h4>
+      <h1 className="title">চিনতে পারছোস তোর বাপদের? তোর জন্য পুরো সেটআপ রেডি।</h1>
       <p className="desc">
-        Six powerful features that work together so you always know exactly
-        where you stand financially.
+        চিনতে পারছোস তোর বাপদের? সব দিক থেকে নজর আছে—এখন শুধু তোর একবার সামনে আসা বাকি।
       </p>
 
       <div className="grid">
@@ -63,9 +90,14 @@ const FeatureSection: React.FC = () => {
           text-align: center;
           font-family: Arial, sans-serif;
         }
+          .card.large {
+            grid-column: span 2;
+            grid-row: span 2;
+           
+          }
 
         .subtitle {
-          color: #2ecc71;
+          color: #eb132d;
           letter-spacing: 2px;
           font-size: 14px;
         }

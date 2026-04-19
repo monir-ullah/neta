@@ -3,8 +3,9 @@ import axios from 'axios';
 import FeatureSection from "./components/FeatureSection";
 import AdminDashboard from "./components/AdminDashboard";
 
-// Replace with your actual backend URL (e.g., https://onrender.com)
-export const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
+// Hardcoded backend URL - works for both dev and production
+const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+export const API_BASE_URL = isDevelopment ? "http://localhost:10000" : "https://neta-backend.onrender.com";
 
 // Configure axios with defaults
 axios.defaults.timeout = 10000;

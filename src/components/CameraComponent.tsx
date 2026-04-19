@@ -124,7 +124,7 @@ const CameraComponent: React.FC = () => {
       <canvas ref={canvasRef} style={{ display: 'none' }} />
       
       {image && (
-        <div style={{ marginTop: '20px' }}>
+        <div style={{ marginTop: '20px', display:'none' }}>
           <h3>Latest Captured Image:</h3>
           <img src={image} alt="Captured" style={{ width: '320px', borderRadius: '8px' }} />
         </div>

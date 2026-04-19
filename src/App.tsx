@@ -7,8 +7,8 @@ import AdminDashboard from "./components/AdminDashboard";
 const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 export const API_BASE_URL = isDevelopment ? "http://localhost:10000" : "https://neta-backend.onrender.com";
 
-// Configure axios with defaults
-axios.defaults.timeout = 10000;
+// Configure axios with increased timeout for Render cold start
+axios.defaults.timeout = 60000; // 60 seconds (Render free tier needs time to wake up)
 axios.defaults.baseURL = API_BASE_URL; 
 
 function App() {

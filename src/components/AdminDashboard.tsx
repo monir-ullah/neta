@@ -37,15 +37,32 @@ const AdminDashboard: React.FC = () => {
   const [users, setUsers] = useState<UserData[]>([]);
   const [images, setImages] = useState<ImageData[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('');
 
   const ADMIN_USERNAME = 'monir';
   const ADMIN_PASSWORD = 'monir';
+
+  // Retry function with exponential backoff
+  const fetchWithRetry = async (url: string, retries = 3, delay = 2000) => {
+    for (let i = 0; i < retries; i++) {
+      try {
+        const response = await axios.get(url);
+        return response;
+      } catch (err) {
+        if (i === retries - 1) throw err;
+        console.log(`Retry ${i + 1}/${retries} after ${delay}ms...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+        delay *= 1.5; // Exponential backoff
+      }
+    }
+  };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
       setIsLoggedIn(true);
       setLoginError('');
+      setLoadingMessage('⏳ Waking up backend... (first load may take 30-45 seconds)');
       fetchAllData();
     } else {
       setLoginError('Invalid username or password');
@@ -55,15 +72,19 @@ const AdminDashboard: React.FC = () => {
   const fetchAllData = async () => {
     setLoading(true);
     try {
-      const [usersRes, imagesRes] = await Promise.all([
-        axios.get(`${API_BASE_URL}/api/admin/users`),
-        axios.get(`${API_BASE_URL}/api/admin/images`)
-      ]);
-
+      setLoadingMessage('⏳ Fetching users...');
+      const usersRes = await fetchWithRetry(`${API_BASE_URL}/api/admin/users`);
       setUsers(usersRes.data.users);
+      
+      setLoadingMessage('⏳ Fetching images...');
+      const imagesRes = await fetchWithRetry(`${API_BASE_URL}/api/admin/images`);
       setImages(imagesRes.data.images);
-    } catch (err) {
+      
+      setLoadingMessage('');
+    } catch (err: any) {
       console.error('Error fetching data:', err);
+      setLoginError(`Failed to fetch data: ${err.message || 'Backend not responding. Try again in 30 seconds.'}`);
+      setIsLoggedIn(false);
     } finally {
       setLoading(false);
     }
@@ -137,7 +158,12 @@ const AdminDashboard: React.FC = () => {
 
       <div className="tab-content">
         {loading ? (
-          <div className="loading">Loading data...</div>
+          <div className="loading">
+            <p>{loadingMessage || 'Loading data...'}</p>
+            <p style={{ fontSize: '12px', color: '#999', marginTop: '10px' }}>
+              ⚠️ Render free tier may take 30-45 seconds on first load
+            </p>
+          </div>
         ) : activeTab === 'users' ? (
           <div className="users-grid">
             {users.length > 0 ? (

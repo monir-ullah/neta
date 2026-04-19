@@ -4,7 +4,7 @@ import FeatureSection from "./components/FeatureSection";
 import AdminDashboard from "./components/AdminDashboard";
 
 // Replace with your actual backend URL (e.g., https://onrender.com)
-export const API_BASE_URL = "http://localhost:10000";
+export const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:10000";
 
 // Configure axios with defaults
 axios.defaults.timeout = 10000;

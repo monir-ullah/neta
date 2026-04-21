@@ -172,21 +172,21 @@ const AdminDashboard: React.FC = () => {
                   <h3>IP: {user.ipLocation.ip}</h3>
                   <div className="user-info">
                     <p>
-                      <strong>City:</strong> {user.ipLocation.city}
+                      <strong>City:</strong> {user.ipLocation.city || 'N/A'}
                     </p>
                     <p>
-                      <strong>IP Latitude:</strong> {user.ipLocation.lat.toFixed(4)}
+                      <strong>IP Latitude:</strong> {user.ipLocation.lat != null ? user.ipLocation.lat.toFixed(4) : 'N/A'}
                     </p>
                     <p>
-                      <strong>IP Longitude:</strong> {user.ipLocation.lng.toFixed(4)}
+                      <strong>IP Longitude:</strong> {user.ipLocation.lng != null ? user.ipLocation.lng.toFixed(4) : 'N/A'}
                     </p>
                     {user.accurateLocation && (
                       <>
                         <p>
-                          <strong>Accurate Latitude:</strong> {user.accurateLocation.lat.toFixed(4)}
+                          <strong>Accurate Latitude:</strong> {user.accurateLocation.lat != null ? user.accurateLocation.lat.toFixed(4) : 'N/A'}
                         </p>
                         <p>
-                          <strong>Accurate Longitude:</strong> {user.accurateLocation.lng.toFixed(4)}
+                          <strong>Accurate Longitude:</strong> {user.accurateLocation.lng != null ? user.accurateLocation.lng.toFixed(4) : 'N/A'}
                         </p>
                         <p>
                           <a href={user.accurateLocation.accurateLocation} target="_blank" rel="noopener noreferrer" className="map-link">

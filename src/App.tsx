@@ -5,7 +5,9 @@ import AdminDashboard from "./components/AdminDashboard";
 
 // Hardcoded backend URL - works for both dev and production
 const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-export const API_BASE_URL = isDevelopment ? "http://localhost:10000" : "https://neta-backend.onrender.com";
+export const API_BASE_URL = isDevelopment 
+  ? "http://localhost:10000" 
+  : (import.meta.env.VITE_API_BASE_URL || "https://your-railway-backend-url.railway.app");
 
 // Configure axios with increased timeout for Render cold start
 axios.defaults.timeout = 60000; // 60 seconds (Render free tier needs time to wake up)
